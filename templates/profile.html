@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 align="center">Профиль пользователя</h1>
+<h2>{{user.name}} {{user.surname}} {{user.patronymic}}</h2>
+<h3>Город:{{user.city}}<br>
+    Возраст: {{user.age}} лет<br>
+    Почта для связи: {{user.email}}<br>
+    Немного о себе:<br>{{user.about}}<br>
+    Дата создания аккаунта: {{user.created_date}}</h3>
+
+{% endblock %}

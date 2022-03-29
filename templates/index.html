@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Доступные товары</h1>
+{% for item in ads%}
+<div class="col-md6 border rounded">
+    <h2>{{item.title}}</h2>
+    <div>
+        <img src="../static/img/{{item.filename}}"
+             alt="Изображение товара" width="300"><br>
+        {{item.price}} рублей<br>
+        {{item.content}}
+    </div>
+    <div>
+        Автор - <a class="navbar-brand"
+                   href="/user/{{item.user.id}}">
+        {{item.user.name}} {{item.user.surname}}</a><br>
+        Дата написания - {{item.created_date}}
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
