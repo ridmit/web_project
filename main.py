@@ -1,10 +1,14 @@
+import os
+
 from flask import Flask, render_template, redirect
-from flask_login import LoginManager, login_user, login_required, logout_user
+from flask_login import LoginManager, login_user, login_required, \
+    logout_user, current_user
+from werkzeug.utils import secure_filename
 
 from data import db_session
 from data.ads import Ad
 from data.users import User
-
+from forms.ad import AdForm
 from forms.user import RegisterForm, LoginForm
 
 app = Flask(__name__)
@@ -22,7 +26,7 @@ def load_user(user_id):
 @app.route("/")
 def index():
     db_sess = db_session.create_session()
-    ads = db_sess.query(Ad).all()
+    ads = db_sess.query(Ad).filter(Ad.is_sold == 0)
     return render_template("index.html", ads=ads)
 
 
@@ -83,6 +87,28 @@ def login():
 def logout():
     logout_user()
     return redirect("/")
+
+
+@app.route('/ad', methods=['GET', 'POST'])
+@login_required
+def add_news():
+    form = AdForm()
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        ad = Ad()
+        ad.title = form.title.data
+        ad.content = form.content.data
+        ad.price = form.price.data
+        f = form.image.data
+        filename = secure_filename(f.filename)
+        f.save(os.path.join("static\\img", filename))
+        ad.filename = filename
+        current_user.ads.append(ad)
+        db_sess.merge(current_user)
+        db_sess.commit()
+        return redirect('/')
+    return render_template('ad.html', title='Добавление объявления',
+                           form=form)
 
 
 def main():
