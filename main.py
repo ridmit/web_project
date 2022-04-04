@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template, redirect
+from flask import Flask, render_template, redirect, abort
 from flask_login import LoginManager, login_user, login_required, \
     logout_user, current_user
 from werkzeug.utils import secure_filename
@@ -27,14 +27,17 @@ def load_user(user_id):
 def index():
     db_sess = db_session.create_session()
     ads = db_sess.query(Ad).filter(Ad.is_sold == 0)
-    return render_template("index.html", ads=ads)
+    return render_template("index.html", ads=ads,
+                           title="Продажа изделий ручной работы")
 
 
 @app.route("/user/<user_id>")
 def profile(user_id):
     db_sess = db_session.create_session()
     user = db_sess.query(User).filter(User.id == user_id).first()
-    return render_template("profile.html", user=user)
+    return render_template("profile.html", user=user,
+                           title=f"Профиль пользователя "
+                                 f"{user.name} {user.surname}")
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -91,7 +94,7 @@ def logout():
 
 @app.route('/ad', methods=['GET', 'POST'])
 @login_required
-def add_news():
+def add_ad():
     form = AdForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
@@ -109,6 +112,23 @@ def add_news():
         return redirect('/')
     return render_template('ad.html', title='Добавление объявления',
                            form=form)
+
+
+@app.route('/ad_delete/<int:id>', methods=['GET', 'POST'])
+@login_required
+def ad_delete(id):
+    db_sess = db_session.create_session()
+    ad = db_sess.query(Ad).filter(Ad.id == id,
+                                  Ad.user == current_user).first()
+    if ad:
+        db_sess.delete(ad)
+        db_sess.commit()
+        full_name = "static/img/" + ad.filename
+        if os.path.exists(full_name):
+            os.remove(full_name)
+    else:
+        abort(404)
+    return redirect('/')
 
 
 def main():
