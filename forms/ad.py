@@ -9,4 +9,9 @@ class AdForm(FlaskForm):
     content = TextAreaField("Содержание", validators=[DataRequired()])
     price = IntegerField("Цена", validators=[DataRequired()])
     image = FileField("Изображение", validators=[DataRequired()])
-    submit = SubmitField("Создать")
+    current_img = StringField()
+    submit = SubmitField("Подтвердить")
+
+
+class AdEditForm(AdForm):
+    image = FileField("Изменить изображение")

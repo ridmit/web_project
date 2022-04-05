@@ -1,6 +1,7 @@
 import os
+from datetime import datetime
 
-from flask import Flask, render_template, redirect, abort
+from flask import Flask, render_template, redirect, abort, request
 from flask_login import LoginManager, login_user, login_required, \
     logout_user, current_user
 from werkzeug.utils import secure_filename
@@ -8,7 +9,7 @@ from werkzeug.utils import secure_filename
 from data import db_session
 from data.ads import Ad
 from data.users import User
-from forms.ad import AdForm
+from forms.ad import AdForm, AdEditForm
 from forms.user import RegisterForm, LoginForm
 
 app = Flask(__name__)
@@ -111,6 +112,47 @@ def add_ad():
         db_sess.commit()
         return redirect('/')
     return render_template('ad.html', title='Добавление объявления',
+                           form=form)
+
+
+@app.route('/ad/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_ad(id):
+    form = AdEditForm()
+    if request.method == "GET":
+        db_sess = db_session.create_session()
+        ad = db_sess.query(Ad).filter(Ad.id == id,
+                                      Ad.user == current_user).first()
+        if ad:
+            form.title.data = ad.title
+            form.content.data = ad.content
+            form.price.data = ad.price
+            form.current_img.data = f"../static/img/{ad.filename}"
+        else:
+            abort(404)
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        ad = db_sess.query(Ad).filter(Ad.id == id,
+                                      Ad.user == current_user).first()
+        if ad:
+            ad.title = form.title.data
+            ad.content = form.content.data
+            ad.price = form.price.data
+            ad.created_date = datetime.now()
+            f = form.image.data
+            if f:
+                full_name = "static/img/" + ad.filename
+                if os.path.exists(full_name):
+                    os.remove(full_name)
+                filename = secure_filename(f.filename)
+                f.save(os.path.join("static\\img", filename))
+                ad.filename = filename
+            db_sess.commit()
+            return redirect('/')
+        else:
+            abort(404)
+    return render_template('ad.html',
+                           title='Редактирование объявления',
                            form=form)
 
 
