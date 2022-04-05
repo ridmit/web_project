@@ -7,16 +7,18 @@
 {% endif %}
 {% for item in ads|sort(attribute='created_date', reverse=true)%}
 <div class="col-md6 border rounded">
-    <h2>{{item.title}}</h2>
+    <a href="/ad/details/{{ item.id }}" title="Подробнее о товаре" style="color: #000000">
+        <h2>{{item.title}}</h2>
+        <div>
+            <img src="../static/img/{{item.filename}}"
+                 alt="Изображение товара" width="300"><br>
+        </div>
+    </a>
     <div>
-        <img src="../static/img/{{item.filename}}"
-             alt="Изображение товара" width="300"><br>
         {{item.price}} рублей<br>
         {{item.content}}
-    </div>
-    <div>
-        Автор - <a class="navbar-brand"
-                   href="/user/{{item.user.id}}">
+        Автор - <a class="navbar-brand" href="/user/{{item.user.id}}"
+                   style="color: #000000" title="Подробнее об авторе">
         {{item.user.name}} {{item.user.surname}}</a><br>
         Дата написания - {{item.created_date}}
     </div>

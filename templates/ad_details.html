@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 align="center">{{ ad.title }}</h1>
+<h3>Описание: {{ ad.content }}<br>
+    Цена за единицу товара: {{ad.price}}<br>
+    Город: {{ ad.user.city }}<br>
+    ФИО продавца: {{ ad.user.name }} {{ ad.user.surname }} {{ ad.user.patronymic }}<br>
+    Почта для связи: {{ad.user.email}}<br>
+    Дата создания объявления: {{ad.created_date}}
+</h3>
+
+{% endblock %}

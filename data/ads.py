@@ -2,10 +2,12 @@ import datetime
 import sqlalchemy
 
 from sqlalchemy import orm
+from sqlalchemy_serializer import SerializerMixin
+
 from data.db_session import SqlAlchemyBase
 
 
-class Ad(SqlAlchemyBase):
+class Ad(SqlAlchemyBase, SerializerMixin):
     __tablename__ = 'ads'
 
     id = sqlalchemy.Column(sqlalchemy.Integer,

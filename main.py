@@ -1,21 +1,29 @@
 import os
 from datetime import datetime
 
-from flask import Flask, render_template, redirect, abort, request
+from flask import Flask, render_template, redirect, abort, request,\
+    jsonify, make_response
+from flask_restful import abort, Api
 from flask_login import LoginManager, login_user, login_required, \
     logout_user, current_user
 from werkzeug.utils import secure_filename
 
-from data import db_session
+from data import db_session, ads_resources
 from data.ads import Ad
 from data.users import User
 from forms.ad import AdForm, AdEditForm
 from forms.user import RegisterForm, LoginForm
 
 app = Flask(__name__)
+api = Api(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
+
+
+@app.errorhandler(404)
+def not_found(error):
+    return make_response(jsonify({'error': 'Not found'}), 404)
 
 
 @login_manager.user_loader
@@ -173,8 +181,17 @@ def ad_delete(id):
     return redirect('/')
 
 
+@app.route("/ad/details/<ad_id>")
+def ad_details(ad_id):
+    db_sess = db_session.create_session()
+    ad = db_sess.query(Ad).filter(Ad.id == ad_id).first()
+    return render_template("ad_details.html", ad=ad,
+                           title=f"Обзор товара")
+
+
 def main():
     db_session.global_init("db/database.db")
+    api.add_resource(ads_resources.AdsResource, '/api/ads/<int:ad_id>')
     app.run()
 
 
