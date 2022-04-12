@@ -1,15 +1,8 @@
 .border  {
     padding: 25px 25px;
-clear:both;
-    height: auto;
 }
 .add {
     background-color: #FFFAFA;
-    height: auto;
-
-
-
-
 }
 .add:hover {
     background-color: #F5F5F5;
@@ -19,7 +12,6 @@ clear:both;
     color: #000000; /* Цвет обычной ссылки */
     text-decoration: none; /* Убираем подчеркивание у ссылок */
 }
-
 
 #profile_href {
     color: #00FFFF; /* Цвет обычной ссылки */
@@ -34,10 +26,8 @@ clear:both;
 }
 
 img{
-    max-width: 200px;
+    max-width: 300px;
     height: auto;
-    display: block;
-    float: left; /* Выравнивание по правому краю  */
     margin: 10px; /* Отступы вокруг картинки */
 }
 
