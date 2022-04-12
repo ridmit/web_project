@@ -1,8 +1,15 @@
 .border  {
     padding: 25px 25px;
+clear:both;
+    height: auto;
 }
 .add {
     background-color: #FFFAFA;
+    height: auto;
+
+
+
+
 }
 .add:hover {
     background-color: #F5F5F5;
@@ -27,7 +34,10 @@
 }
 
 img{
-    max-width: 20%;
+    max-width: 200px;
     height: auto;
     display: block;
+    float: left; /* Выравнивание по правому краю  */
+    margin: 10px; /* Отступы вокруг картинки */
 }
+

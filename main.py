@@ -114,7 +114,7 @@ def add_ad():
         ad.price = form.price.data
         f = form.image.data
         filename = secure_filename(f.filename)
-        f.save(os.path.join("static\\img", filename))
+        f.save(os.path.join("static/img", filename))
         ad.filename = filename
         current_user.ads.append(ad)
         db_sess.merge(current_user)
@@ -154,7 +154,7 @@ def edit_ad(id):
                 if os.path.exists(full_name):
                     os.remove(full_name)
                 filename = secure_filename(f.filename)
-                f.save(os.path.join("static\\img", filename))
+                f.save(os.path.join("static/img", filename))
                 ad.filename = filename
             db_sess.commit()
             return redirect('/')

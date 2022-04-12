@@ -11,16 +11,23 @@
         <a href="/ad/details/{{ item.id }}"
            title="Подробнее о товаре" id="add_href">
             <h2>{{item.title}}</h2>
-            <div>
-                <img src="../static/img/{{item.filename}}"
-                     alt="Изображение товара" class="rounded-3"><br>
-            </div>
-            {{item.price}} рублей<br>
-            {{item.content}}
-            Автор - <a class="navbar-brand" href="/user/{{item.user.id}}"
-                       title="Подробнее об авторе" id="profile_href">
-            {{item.user.name}} {{item.user.surname}}</a><br>
-            Дата написания - {{item.created_date}}
+
+            <table>
+                <tr>
+                    <td><img src="../static/img/{{item.filename}}"
+                             alt="Изображение товара" class="rounded-3"></td>
+                    <td><p>
+                        <p class="fw-bold fs-4">{{item.price}} рублей</p>
+                        <p class="fs-6">{{item.content}}</p>
+                        <p class="fst-italic fs-5">
+                            Автор - <a class="navbar-brand" href="/user/{{item.user.id}}"
+                                       title="Подробнее об авторе" id="profile_href">
+                            {{item.user.name}} {{item.user.surname}}</a></p>
+                        <p class="fs-6">Дата написания - {{item.created_date}}</p>
+                        </p></td>
+                </tr>
+            </table>
+
             {% if current_user.is_authenticated and current_user == item.user %}
             <div>
                 <a href="/ad/{{ item.id }}" class="btn btn-warning">
