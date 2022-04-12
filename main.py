@@ -37,7 +37,8 @@ def index():
     db_sess = db_session.create_session()
     ads = db_sess.query(Ad).filter(Ad.is_sold == 0)
     return render_template("index.html", ads=ads,
-                           title="Продажа изделий ручной работы")
+                           title="Продажа изделий ручной работы",
+                           css="static/css/index.css")
 
 
 @app.route("/user/<user_id>")

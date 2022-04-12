@@ -3,35 +3,36 @@
 {% block content %}
 <h1>Доступные товары</h1>
 {% if current_user.is_authenticated %}
-    <a href="ad" class="btn btn-secondary">Сделать объявление</a>
-{% endif %}
+<a href="ad" class="btn btn-secondary">Сделать объявление</a>
+{% endif %}<br><br>
 {% for item in ads|sort(attribute='created_date', reverse=true)%}
-<div class="col-md6 border rounded">
-    <a href="/ad/details/{{ item.id }}" title="Подробнее о товаре" style="color: #000000">
-        <h2>{{item.title}}</h2>
-        <div>
-            <img src="../static/img/{{item.filename}}"
-                 alt="Изображение товара" width="300"><br>
-        </div>
-    </a>
-    <div>
-        {{item.price}} рублей<br>
-        {{item.content}}
-        Автор - <a class="navbar-brand" href="/user/{{item.user.id}}"
-                   style="color: #000000" title="Подробнее об авторе">
-        {{item.user.name}} {{item.user.surname}}</a><br>
-        Дата написания - {{item.created_date}}
-    </div>
-    {% if current_user.is_authenticated and current_user == item.user %}
-    <div>
-        <a href="/ad/{{ item.id }}" class="btn btn-warning">
-            Изменить
+<div class="add">
+    <div class="border border-secondary rounded">
+        <a href="/ad/details/{{ item.id }}"
+           title="Подробнее о товаре" id="add_href">
+            <h2>{{item.title}}</h2>
+            <div>
+                <img src="../static/img/{{item.filename}}"
+                     alt="Изображение товара" class="rounded-3"><br>
+            </div>
+            {{item.price}} рублей<br>
+            {{item.content}}
+            Автор - <a class="navbar-brand" href="/user/{{item.user.id}}"
+                       title="Подробнее об авторе" id="profile_href">
+            {{item.user.name}} {{item.user.surname}}</a><br>
+            Дата написания - {{item.created_date}}
+            {% if current_user.is_authenticated and current_user == item.user %}
+            <div>
+                <a href="/ad/{{ item.id }}" class="btn btn-warning">
+                    Изменить
+                </a>
+                <a href="/ad_delete/{{ item.id }}" class="btn btn-danger">
+                    Удалить
+                </a>
+            </div>
+            {% endif %}
         </a>
-        <a href="/ad_delete/{{ item.id }}" class="btn btn-danger">
-            Удалить
-        </a>
     </div>
-{% endif %}
-</div>
+</div><br>
 {% endfor %}
 {% endblock %}

@@ -1,0 +1,33 @@
+.border  {
+    padding: 25px 25px;
+}
+.add {
+    background-color: #FFFAFA;
+}
+.add:hover {
+    background-color: #F5F5F5;
+}
+
+#add_href {
+    color: #000000; /* Цвет обычной ссылки */
+    text-decoration: none; /* Убираем подчеркивание у ссылок */
+}
+
+
+#profile_href {
+    color: #00FFFF; /* Цвет обычной ссылки */
+    text-decoration: none; /* Убираем подчеркивание у ссылок */
+}
+#profile_href:visited {
+    color: #8A2BE2; /* Цвет посещённой ссылки */
+}
+#profile_href:hover {
+    color: #FF0000; /* Цвет ссылки при наведении на нее курсора мыши */
+    text-decoration: underline; /* Добавляем подчеркивание */
+}
+
+img{
+    max-width: 20%;
+    height: auto;
+    display: block;
+}
