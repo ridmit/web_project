@@ -5,3 +5,7 @@ body {
 .navbar {
     padding: 5px 30px;
 }
+
+.base_title {
+    text-decoration: none; /* Убираем подчеркивание у ссылок */
+}

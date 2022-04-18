@@ -1,7 +1,7 @@
 import os
 
 from datetime import datetime
-from flask import Flask, render_template, redirect, abort, request,\
+from flask import Flask, render_template, redirect, abort, request, \
     jsonify, make_response
 from flask_restful import abort, Api
 from flask_login import LoginManager, login_user, login_required, \
@@ -182,7 +182,7 @@ def ad_delete(id):
     return redirect('/')
 
 
-@app.route("/ad/details/<ad_id>")
+@app.route("/ad/details/<int:ad_id>")
 def ad_details(ad_id):
     db_sess = db_session.create_session()
     ad = db_sess.query(Ad).filter(Ad.id == ad_id).first()
