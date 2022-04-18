@@ -192,7 +192,12 @@ def ad_details(ad_id):
 
 def main():
     db_session.global_init("db/database.db")
+
+    # для списка объектов
+    api.add_resource(ads_resources.AdsListResource, '/api/ads')
+    # для одного объекта
     api.add_resource(ads_resources.AdsResource, '/api/ads/<int:ad_id>')
+
     app.run()
 
 

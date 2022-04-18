@@ -15,8 +15,10 @@
 <body>
 <header>
     <nav class="navbar navbar-light bg-light">
-        <span class="navbar-text h1">
-            <a href="/" class="base_title" style="color:grey;">
+        <span class="navbar-text h1" data-bs-toggle="tooltip"
+              data-bs-placement="bottom" title="Перейти на главную страницу">
+            <a href="/" class="base_title"
+               style="color:grey; white-space: nowrap;">
                 Продажа изделий ручной работы</a></span>
         {% if current_user.is_authenticated %}
         <div class="btn-group">
