@@ -1,12 +1,38 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1 align="center">Профиль пользователя</h1>
-<h2>{{user.name}} {{user.surname}} {{user.patronymic}}</h2>
-<h3>Город:{{user.city}}<br>
-    Возраст: {{user.age}} лет<br>
-    Почта для связи: {{user.email}}<br>
-    Немного о себе:<br>{{user.about}}<br>
-    Дата создания аккаунта: {{user.created_date}}</h3>
+<table>
+    <tr>
+        <td align="center" bgcolor="#DCDCDC" width="30%">Информация о пользователе</td>
+        <td align="center" bgcolor="#FAF0E6">Объявления пользователя</td>
+    </tr>
+    <tr>
+        <td align="center"><h2 >{{user.name}} {{user.surname}} {{user.patronymic}}</h2>
+            <h3 >Город: {{user.city}}<br>
+                Возраст: {{user.age}} лет<br>
+                Почта для связи: {{user.email}}<br>
+                Немного о себе:<br>{{user.about}}<br>
+                Дата создания аккаунта: {{user.created_date}}</h3></td>
+        <td align="center">
+            {% if state == "complete" %}
+                {% set active_btn_color = "btn-outline-primary" %}
+                {% set complete_btn_color = "btn-info" %}
+            {% else %}
+                {% set active_btn_color = "btn-primary" %}
+                {% set complete_btn_color = "btn-outline-info" %}
+            {% endif %}
+            <div class="d-grid gap-2 d-md-block" role="group"
+                 aria-label="Basic radio toggle button group" align="top">
+                <a type="button" href="/user/{{user.id}}/active"
+                   class="btn {{ active_btn_color }} btn-lg">
+                    {{ active | length() }} активных</a>
+                <a type="button" href="/user/{{user.id}}/complete"
+                   class="btn {{ complete_btn_color }} btn-lg">
+                    {{ complete | length() }} завершённых</a>
+            </div>
+            {% include "ads_list.html" %}
+        </td>
+    </tr>
+</table>
 
 {% endblock %}

@@ -1,0 +1,66 @@
+{% for item in ads|sort(attribute='created_date', reverse=true)%}
+<!-- Modal -->
+<div class="modal fade" id="Modal{{loop.index}}" data-bs-keyboard="false"
+     tabindex="-1" aria-labelledby="ModalLabel{{loop.index}}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title w-100 text-center"
+                    id="ModalLabel{{loop.index}}"> {{ item.title }}</h5>
+                <button type="button" class="btn-close"
+                        data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" align="center">
+                <img class="rounded-3" src="/static/img/{{item.filename}}"
+                     alt="Изображение товара" width="600">
+            </div>
+            <div class="modal-footer">
+                <div class="mx-auto">
+                    <button type="button" class="btn btn-secondary btn-lg"
+                            data-bs-dismiss="modal">Закрыть
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="add">
+    <div class="border border-secondary rounded">
+        <a href="/ad/details/{{ item.id }}" title="Подробнее о товаре" id="add_href">
+            <h2>{{item.title}}</h2>
+            <table>
+                <tr>
+                    <td>
+                        <a data-bs-toggle="modal" data-bs-target="#Modal{{loop.index}}">
+                            <img class="add_img rounded-3"
+                                 src="/static/img/{{item.filename}}"
+                                 alt="Изображение товара">
+                        </a>
+                    </td>
+                    <td><p>
+                        <p class="fw-bold fs-4">{{item.price}} рублей</p>
+                        <p class="fs-6">{{item.content}}</p>
+                        <p class="fst-italic fs-5">
+                            Автор - <a class="navbar-brand" href="/user/{{item.user.id}}/active"
+                                       title="Подробнее об авторе" id="profile_href">
+                            {{item.user.name}} {{item.user.surname}}</a></p>
+                        <p class="fs-6">Дата написания -
+                            {{item.created_date}}</p>
+                    </td>
+                </tr>
+            </table>
+            {% if current_user.is_authenticated and current_user == item.user %}
+            <div>
+                <a href="/ad/{{ item.id }}" class="btn btn-warning">
+                    Изменить
+                </a>
+                <a href="/ad_delete/{{ item.id }}" class="btn btn-danger">
+                    Удалить
+                </a>
+            </div>
+            {% endif %}
+        </a>
+    </div>
+</div><br>
+{% endfor %}

@@ -33,21 +33,45 @@ def load_user(user_id):
 
 
 @app.route("/")
-def index():
+@app.route("/<city>")
+def index(city="Любой город"):
     db_sess = db_session.create_session()
+
     ads = db_sess.query(Ad).filter(Ad.is_sold == 0)
-    return render_template("index.html", ads=ads,
-                           title="Продажа изделий ручной работы",
-                           css="static/css/index.css")
+    if city != "Любой город":
+        ads = db_sess.query(Ad).join(User).filter(Ad.is_sold == 0,
+                                                  User.city == city).all()
+
+    cities = set([user.city for user in db_sess.query(User).all()])
+    params = {
+        "cities": cities,
+        "ads": ads,
+        "css": "static/css/index.css",
+        "title": "Продажа изделий ручной работы",
+        "city": city
+    }
+    return render_template("index.html", **params)
 
 
-@app.route("/user/<user_id>")
-def profile(user_id):
+@app.route("/user/<user_id>/<state>")
+def profile(user_id, state):
     db_sess = db_session.create_session()
     user = db_sess.query(User).filter(User.id == user_id).first()
-    return render_template("profile.html", user=user,
-                           title=f"Профиль пользователя "
-                                 f"{user.name} {user.surname}")
+    active_ads = db_sess.query(Ad).filter(Ad.user == user,
+                                          Ad.is_sold == 0).all()
+    complete_ads = db_sess.query(Ad).filter(Ad.user == user,
+                                            Ad.is_sold == 1).all()
+    ads = complete_ads if state == "complete" else active_ads
+    params = {
+        "user": user,
+        "ads": ads,
+        "active": active_ads,
+        "complete": complete_ads,
+        "title": f"Профиль пользователя {user.name} {user.surname}",
+        "state": state,
+        "css": "/static/css/index.css"
+    }
+    return render_template("profile.html", **params)
 
 
 @app.route('/register', methods=['GET', 'POST'])
