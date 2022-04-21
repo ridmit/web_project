@@ -31,3 +31,10 @@
     margin: 10px; /* Отступы вокруг картинки */
 }
 
+#filters {
+    margin: 20px;
+}
+
+#btn_sold {
+    margin-right: 30%;
+}

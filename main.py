@@ -189,6 +189,20 @@ def edit_ad(id):
                            form=form)
 
 
+@app.route('/item_sell/<int:id>', methods=['GET', 'POST'])
+@login_required
+def item_sell(id):
+    db_sess = db_session.create_session()
+    ad = db_sess.query(Ad).filter(Ad.id == id,
+                                  Ad.user == current_user).first()
+    if ad:
+        ad.is_sold = 1
+        db_sess.commit()
+    else:
+        abort(404)
+    return redirect('/')
+
+
 @app.route('/ad_delete/<int:id>', methods=['GET', 'POST'])
 @login_required
 def ad_delete(id):
