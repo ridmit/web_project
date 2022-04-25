@@ -1,0 +1,26 @@
+<!-- Modal -->
+<div class="modal fade" id="Modal{{i}}" data-bs-keyboard="false"
+     tabindex="-1" aria-labelledby="ModalLabel{{i}}"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title w-100 text-center"
+                    id="ModalLabel{{i}}"> {{ item.title }}</h5>
+                <button type="button" class="btn-close"
+                        data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" align="center">
+                <img class="rounded-3" src="/static/img/{{item.filename}}"
+                     alt="Изображение товара" width="600">
+            </div>
+            <div class="modal-footer">
+                <div class="mx-auto">
+                    <button type="button" class="btn btn-secondary btn-lg"
+                            data-bs-dismiss="modal">Закрыть
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

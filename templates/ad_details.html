@@ -1,13 +1,37 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1 align="center">{{ ad.title }}</h1>
-<h3>Описание: {{ ad.content }}<br>
-    Цена за единицу товара: {{ad.price}}<br>
-    Город: {{ ad.user.city }}<br>
-    ФИО продавца: {{ ad.user.name }} {{ ad.user.surname }} {{ ad.user.patronymic }}<br>
-    Почта для связи: {{ad.user.email}}<br>
-    Дата создания объявления: {{ad.created_date.strftime("%m/%d/%Y %H:%M")}}
-</h3>
+{% set i, item = ad.id, ad %}
+{% include "modal.html" %}
+<table>
+    <tr>
+        <td align="center" style="padding: 10px 80px;" ><h1>{{ ad.title }}</h1></td>
+    </tr>
+    <tr>
+        <td align="center">{{ad.created_date.strftime("%m/%d/%Y %H:%M")}}</td>
+                <td align="left" style="padding-left: 20px;"><h2>{{ad.price}} ₽</h2></td>
+    </tr>
+    <tr>
+        <td align="center">
+            <a data-bs-toggle="modal" data-bs-target="#Modal{{ad.id}}">
+                <img class="add_img rounded-3" alt="Изображение товара"
+                     src="/static/img/{{ad.filename}}" width="400">
+            </a>
+        </td>
+        <td align="center">
+            <div><h3>{{ ad.content }}<br>
+                Город: {{ ad.user.city }}</h3></div>
+            <div>
+                <h3>Продавец: {{ ad.user.name }} {{ ad.user.surname }}
+                    {{ ad.user.patronymic }} </h3>
+                <div align="center"><a href="/user/{{ad.user.id}}/active">
+                    <button type="button" class="btn btn-dark">Подробнее
+                    </button>
+                </a></div>
+                <h4>Почта: {{ad.user.email}}</h4>
+            </div>
+        </td>
+    </tr>
+</table>
 
 {% endblock %}
