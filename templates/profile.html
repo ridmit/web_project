@@ -12,7 +12,8 @@
                 Возраст: {{user.age}} лет<br>
                 Почта для связи: {{user.email}}<br>
                 Немного о себе:<br>{{user.about}}<br>
-                Дата создания аккаунта: {{user.created_date}}</h3></td>
+                Дата создания аккаунта:
+                {{user.created_date.strftime("%m/%d/%Y")}}</h3></td>
         <td align="center">
             {% if state == "complete" %}
                 {% set active_btn_color = "btn-outline-primary" %}

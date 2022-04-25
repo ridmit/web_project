@@ -12,7 +12,7 @@ from werkzeug.utils import secure_filename
 from data import db_session, ads_resources
 from data.ads import Ad
 from data.users import User
-from forms.ad import AdForm, AdEditForm
+from forms.ad import AdForm, AdEditForm, materials
 from forms.user import RegisterForm, LoginForm
 
 app = Flask(__name__)
@@ -34,22 +34,25 @@ def load_user(user_id):
 
 
 @app.route("/")
-@app.route("/<city>")
-def index(city="Любой город"):
+@app.route("/<city>/<material>")
+def index(city="Любой город", material="Любой материал"):
     db_sess = db_session.create_session()
-
-    ads = db_sess.query(Ad).filter(Ad.is_sold == 0)
+    filters = [Ad.is_sold == 0]
     if city != "Любой город":
-        ads = db_sess.query(Ad).join(User).filter(Ad.is_sold == 0,
-                                                  User.city == city).all()
+        filters.append(User.city == city)
+    if material != "Любой материал":
+        filters.append(Ad.material == material)
+    ads = db_sess.query(Ad).join(User).filter(*filters).all()
 
     cities = set([user.city for user in db_sess.query(User).all()])
     params = {
         "cities": cities,
+        "current_city": city,
+        "materials": materials[:-1],
+        "current_material": material,
         "ads": ads,
-        "css": "static/css/index.css",
-        "title": "Продажа изделий ручной работы",
-        "city": city
+        "css": "../static/css/index.css",
+        "title": "Продажа изделий ручной работы"
     }
     return render_template("index.html", **params)
 
@@ -92,7 +95,7 @@ def register():
             name=form.name.data,
             surname=form.surname.data,
             patronymic=form.patronymic.data,
-            city=form.city.data,
+            city=form.city.data.lower().capitalize(),
             age=form.age.data,
             email=form.email.data,
             about=form.about.data

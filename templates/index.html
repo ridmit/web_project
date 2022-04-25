@@ -9,16 +9,29 @@
             <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll"
                 style="--bs-scroll-height: 100px;">
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarScrollingDropdown"
-                       role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        {{ city }}</a>
+                    <a class="nav-link dropdown-toggle" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ current_city }}</a>
                     <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
                         {% for city in cities %}
-                        <li><a class="dropdown-item" href="/{{ city }}">{{ city }}</a>
+                        <li><a class="dropdown-item" href="/{{ city }}/{{ current_material }}">{{ city }}</a>
                         </li>
                         {% endfor %}
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="/Другой город">Другой город</a></li>
+                        <li><a class="dropdown-item" href="/Другой город/{{ current_material }}">Другой город</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ current_material }}</a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+                        {% for material in materials %}
+                        <li><a class="dropdown-item" href="/{{ current_city }}/{{ material }}">{{ material }}</a>
+                        </li>
+                        {% endfor %}
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="/{{ current_city }}/Другое">Другоe</a></li>
                     </ul>
                 </li>
             </ul>
@@ -26,10 +39,13 @@
     </div>
 </nav>
 
+<h2></h2>
 <h1>Доступные товары</h1>
 {% if current_user.is_authenticated %}
 <a href="ad" class="btn btn-secondary">Сделать объявление</a>
 {% endif %}<br><br>
 {% include "ads_list.html" %}
-
+{% if not ads %}
+<h1 align="center">Ничего не найдено в выбранной области поиска</h1>
+{% endif %}
 {% endblock %}
