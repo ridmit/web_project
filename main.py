@@ -189,17 +189,19 @@ def edit_ad(id):
                            form=form)
 
 
-@app.route('/item_sell/<int:id>', methods=['GET', 'POST'])
+@app.route('/change_is_sold/<int:param>/<int:id>', methods=['GET', 'POST'])
 @login_required
-def item_sell(id):
+def change_is_sold(param, id):
     db_sess = db_session.create_session()
     ad = db_sess.query(Ad).filter(Ad.id == id,
                                   Ad.user == current_user).first()
     if ad:
-        ad.is_sold = 1
+        ad.is_sold = param
         db_sess.commit()
     else:
         abort(404)
+    if param == 1:
+        return redirect(f"/user/{current_user.id}/complete")
     return redirect('/')
 
 

@@ -54,8 +54,8 @@
                     </td>
                 </tr>
             </table>
-            {% if current_user.is_authenticated and current_user == item.user %}
-            <div align="right">
+            {% if current_user.is_authenticated and current_user == item.user and state != "complete" %}
+            <div align="center">
                 <a href="/ad/{{ item.id }}" class="btn btn-info">
                     Изменить
                 </a>
@@ -63,8 +63,16 @@
                    class="btn btn-danger" id="btn_sold">
                     Удалить
                 </a>
-                <a href="/item_sell/{{ item.id }}"
+            </div>
+            <div align="right">
+                <a href="/change_is_sold/1/{{ item.id }}"
                    class="btn btn-warning">Товар продан</a>
+            </div>
+            {% endif %}
+            {% if current_user.is_authenticated and current_user == item.user and state == "complete" %}
+            <div align="center">
+                <a href="/change_is_sold/0/{{ item.id }}"
+                   class="btn btn-warning">Снова выставить на продажу</a>
             </div>
             {% endif %}
         </a>
