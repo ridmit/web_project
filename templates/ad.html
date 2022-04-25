@@ -20,6 +20,14 @@
             </p>
         {% endfor %}
     <p>
+        {{ form.material.label }}<br>
+        {{ form.material(class="form-control") }}<br>
+        {% for error in form.material.errors %}
+            <p content="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    <p>
         {{ form.price.label }}<br>
         {{ form.price(class="form-control") }}<br>
         {% for error in form.price.errors %}

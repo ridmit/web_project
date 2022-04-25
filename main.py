@@ -1,5 +1,6 @@
 import os
 
+from random import randint
 from datetime import datetime
 from flask import Flask, render_template, redirect, abort, request, \
     jsonify, make_response
@@ -137,7 +138,10 @@ def add_ad():
         ad.content = form.content.data
         ad.price = form.price.data
         f = form.image.data
-        filename = secure_filename(f.filename)
+        # в конец названия изображения добавляется случайно число, чтобы
+        # в базу данных не попали фотографии с одинаковым названием
+        rand_num = randint(10 ** 5, 10 ** 6 - 1)
+        filename = secure_filename(str(rand_num).join(f.filename.split('.')))
         f.save(os.path.join("static/img", filename))
         ad.filename = filename
         current_user.ads.append(ad)
@@ -160,6 +164,7 @@ def edit_ad(id):
             form.title.data = ad.title
             form.content.data = ad.content
             form.price.data = ad.price
+            form.material.data = ad.material
             form.current_img.data = f"../static/img/{ad.filename}"
         else:
             abort(404)
@@ -171,13 +176,16 @@ def edit_ad(id):
             ad.title = form.title.data
             ad.content = form.content.data
             ad.price = form.price.data
+            ad.material = form.material.data
             ad.created_date = datetime.now()
             f = form.image.data
             if f:
                 full_name = "static/img/" + ad.filename
                 if os.path.exists(full_name):
                     os.remove(full_name)
-                filename = secure_filename(f.filename)
+                rand_num = randint(10 ** 5, 10 ** 6 - 1)
+                filename = secure_filename(
+                    str(rand_num).join(f.filename.split('.')))
                 f.save(os.path.join("static/img", filename))
                 ad.filename = filename
             db_sess.commit()

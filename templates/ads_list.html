@@ -50,7 +50,7 @@
                                        id="profile_href">
                             {{item.user.name}} {{item.user.surname}}</a></p>
                         <p class="fs-6">Дата написания -
-                            {{item.created_date}}</p>
+                            {{item.created_date.strftime("%m/%d/%Y %H:%M")}}</p>
                     </td>
                 </tr>
             </table>
