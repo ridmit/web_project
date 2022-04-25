@@ -139,12 +139,15 @@ def add_ad():
         ad = Ad()
         ad.title = form.title.data
         ad.content = form.content.data
+        ad.condition = form.condition.data
         ad.price = form.price.data
+        ad.material = form.material.data
         f = form.image.data
         # в конец названия изображения добавляется случайно число, чтобы
         # в базу данных не попали фотографии с одинаковым названием
         rand_num = randint(10 ** 5, 10 ** 6 - 1)
-        filename = secure_filename(str(rand_num).join(f.filename.split('.')))
+        filename = secure_filename(
+            (str(rand_num) + '.').join(f.filename.split('.')))
         f.save(os.path.join("static/img", filename))
         ad.filename = filename
         current_user.ads.append(ad)
@@ -168,6 +171,7 @@ def edit_ad(id):
             form.content.data = ad.content
             form.price.data = ad.price
             form.material.data = ad.material
+            form.condition.data = ad.condition
             form.current_img.data = f"../static/img/{ad.filename}"
         else:
             abort(404)
@@ -180,6 +184,7 @@ def edit_ad(id):
             ad.content = form.content.data
             ad.price = form.price.data
             ad.material = form.material.data
+            ad.condition = form.condition.data
             ad.created_date = datetime.now()
             f = form.image.data
             if f:
@@ -188,7 +193,7 @@ def edit_ad(id):
                     os.remove(full_name)
                 rand_num = randint(10 ** 5, 10 ** 6 - 1)
                 filename = secure_filename(
-                    str(rand_num).join(f.filename.split('.')))
+                    (str(rand_num) + '.').join(f.filename.split('.')))
                 f.save(os.path.join("static/img", filename))
                 ad.filename = filename
             db_sess.commit()

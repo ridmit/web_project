@@ -22,5 +22,6 @@ class Ad(SqlAlchemyBase, SerializerMixin):
                                      default=datetime.datetime.now)
     is_sold = sqlalchemy.Column(sqlalchemy.Boolean, default=False)
     material = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    condition = sqlalchemy.Column(sqlalchemy.String, nullable=True)
 
     user = orm.relation('User')

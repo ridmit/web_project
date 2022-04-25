@@ -28,6 +28,14 @@
             </p>
         {% endfor %}
     <p>
+        {{ form.condition.label }}<br>
+        {{ form.condition(class="form-control") }}<br>
+        {% for error in form.condition.errors %}
+            <p content="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    <p>
         {{ form.price.label }}<br>
         {{ form.price(class="form-control") }}<br>
         {% for error in form.price.errors %}

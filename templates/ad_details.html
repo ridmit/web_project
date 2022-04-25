@@ -20,8 +20,9 @@
         </td>
         <td align="center">
             <div><h3>{{ ad.content }}<br>
-                Город: {{ ad.user.city }}</h3></div>
-            <div>
+                Город: {{ ad.user.city }}<br>
+                Состояние: {{ ad.condition }}</h3></div>
+            <div align="bottom" style="margin-top: 80px">
                 <h3>Продавец: {{ ad.user.name }} {{ ad.user.surname }}
                     {{ ad.user.patronymic }} </h3>
                 <div align="center"><a href="/user/{{ad.user.id}}/active">

@@ -14,6 +14,7 @@ class AdForm(FlaskForm):
     content = TextAreaField("Содержание", validators=[DataRequired()])
     material = SelectField("Вид изделия",
                            choices=materials, validators=[DataRequired()])
+    condition = StringField("Состояние изделия", validators=[DataRequired()])
     price = IntegerField("Цена", validators=[DataRequired()])
     image = FileField("Изображение", validators=[DataRequired()])
     current_img = StringField()
