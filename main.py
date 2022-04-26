@@ -1,7 +1,7 @@
 import os
 
 from random import randint
-from datetime import datetime
+import datetime
 from flask import Flask, render_template, redirect, abort, request, \
     jsonify, make_response
 from flask_restful import abort, Api
@@ -14,6 +14,7 @@ from data.ads import Ad
 from data.users import User
 from forms.ad import AdForm, AdEditForm, materials
 from forms.user import RegisterForm, LoginForm
+from functions import get_utc
 
 app = Flask(__name__)
 api = Api(app)
@@ -25,6 +26,11 @@ app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 @app.errorhandler(404)
 def not_found(error):
     return make_response(jsonify({'error': 'Not found'}), 404)
+
+
+@app.template_filter('change_time')
+def change_time(time, city):
+    return time + datetime.timedelta(hours=get_utc(city))
 
 
 @login_manager.user_loader
@@ -185,7 +191,7 @@ def edit_ad(id):
             ad.price = form.price.data
             ad.material = form.material.data
             ad.condition = form.condition.data
-            ad.created_date = datetime.now()
+            ad.created_date = datetime.datetime.now()
             f = form.image.data
             if f:
                 full_name = "static/img/" + ad.filename
@@ -254,6 +260,7 @@ def main():
     # для одного объекта
     api.add_resource(ads_resources.AdsResource, '/api/ads/<int:ad_id>')
 
+    # app.run()
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
 

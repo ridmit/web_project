@@ -13,7 +13,8 @@
                 Почта: {{user.email}}<br>
                 Немного о себе:<br>{{user.about}}<br>
                 Дата создания аккаунта:
-                {{user.created_date.strftime("%m/%d/%Y")}}</h3></td>
+                {{(user.created_date |
+                change_time(current_user.city)).strftime("%m/%d/%Y")}}</h3></td>
         <td align="center">
             {% if state == "complete" %}
                 {% set active_btn_color = "btn-outline-primary" %}
