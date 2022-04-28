@@ -101,7 +101,8 @@ def register():
             name=form.name.data,
             surname=form.surname.data,
             patronymic=form.patronymic.data,
-            city=form.city.data.lower().capitalize(),
+            city="-".join([elem.lower().capitalize()
+                           for elem in form.city.data.split("-")]),
             age=form.age.data,
             email=form.email.data,
             about=form.about.data
@@ -147,7 +148,8 @@ def edit_profile(id):
             user.name = form.name.data
             user.surname = form.surname.data
             user.patronymic = form.patronymic.data
-            user.city = form.city.data
+            user.city = "-".join([elem.lower().capitalize()
+                                  for elem in form.city.data.split("-")])
             user.age = form.age.data
             user.email = form.email.data
             user.about = form.about.data
