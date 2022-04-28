@@ -19,6 +19,11 @@ class RegisterForm(FlaskForm):
     submit = SubmitField('Зарегистрироваться')
 
 
+class EditProfileForm(RegisterForm):
+    password = PasswordField('Новый пароль', validators=[DataRequired()])
+    submit = SubmitField('Изменить')
+
+
 class LoginForm(FlaskForm):
     email = EmailField('Почта', validators=[DataRequired()])
     password = PasswordField('Пароль', validators=[DataRequired()])

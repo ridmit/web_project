@@ -13,7 +13,7 @@ from data import db_session, ads_resources
 from data.ads import Ad
 from data.users import User
 from forms.ad import AdForm, AdEditForm, materials
-from forms.user import RegisterForm, LoginForm
+from forms.user import RegisterForm, LoginForm, EditProfileForm
 from functions import get_utc
 
 app = Flask(__name__)
@@ -111,6 +111,53 @@ def register():
         db_sess.commit()
         return redirect('/login')
     return render_template('register.html', title='Регистрация', form=form)
+
+
+@app.route('/profile_edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_profile(id):
+    form = EditProfileForm()
+    if request.method == "GET":
+        db_sess = db_session.create_session()
+        user = db_sess.query(User).filter(User.id == id,
+                                          id == current_user.id).first()
+        if user:
+            form.name.data = user.name
+            form.surname.data = user.surname
+            form.patronymic.data = user.patronymic
+            form.city.data = user.city
+            form.age.data = user.age
+            form.email.data = user.email
+            form.about.data = user.about
+        else:
+            abort(404)
+    if form.validate_on_submit():
+        if form.password.data != form.password_again.data:
+            return render_template('register.html',
+                                   title='Редактирование профиля', form=form,
+                                   message="Пароли не совпадают")
+        db_sess = db_session.create_session()
+        if db_sess.query(User).filter(
+                User.email == form.email.data, User.id != id).first():
+            return render_template('register.html',
+                                   title='Редактирование профиля', form=form,
+                                   message="Такой пользователь уже есть")
+        user = db_sess.query(User).filter(User.id == id).first()
+        if user:
+            user.name = form.name.data
+            user.surname = form.surname.data
+            user.patronymic = form.patronymic.data
+            user.city = form.city.data
+            user.age = form.age.data
+            user.email = form.email.data
+            user.about = form.about.data
+            user.set_password(form.password.data)
+            db_sess.commit()
+        else:
+            abort(404)
+        return redirect('/')
+    return render_template('register.html',
+                           title='Редактирование профиля', form=form)
 
 
 @app.route('/login', methods=['GET', 'POST'])
